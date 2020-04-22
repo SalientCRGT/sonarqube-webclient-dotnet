@@ -19,13 +19,18 @@
  */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentAssertions.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SonarQube.Client.Api;
 using SonarQube.Client.Messages;
 using SonarQube.Client.Models;
 
@@ -163,5 +168,41 @@ namespace SonarQube.Client.Tests
 
             logger.ErrorMessages.Should().Contain("The service is expected to be connected.");
         }
+
+        [TestMethod]
+        public async Task TestNew()
+        {
+            var logger = new TestLogger();
+
+            var service = new SonarQubeService(new HttpClientHandler(), "test", logger);
+
+            var pwd = new SecureString();
+            foreach(var c in "admin")
+            {
+                pwd.AppendChar(c);
+            }
+
+            await service.ConnectAsync(
+                //new ConnectionInformation(new Uri("https://sonarcloud.io"), "d00fbecafecbc23ab329f298d8101acc4b5eae7d", null),
+                new ConnectionInformation(new Uri("http://localhost:9000"), "admin", pwd),
+                CancellationToken.None);
+
+
+            var exporter = new WIP.RoslynExporterAdapter();
+            exporter.Initialize(service);
+
+            var request = new Client.Api.V6_60.GetRoslynExportProfileRequest
+            {
+                 LanguageKey = "cs", Logger = logger, OrganizationKey = "any", QualityProfileName = "AXGiaTEbqq_JgLo6xbEF"
+            };
+
+            var actual = await exporter.GetResponse(request, CancellationToken.None);
+
+            actual.Should().NotBeNull();
+
+            var data = SonarQube.Client.WIP.Serializer.ToString(actual);
+            Console.WriteLine(data);
+        }
     }
+
 }
