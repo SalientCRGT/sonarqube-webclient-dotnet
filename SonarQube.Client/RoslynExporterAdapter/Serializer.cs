@@ -34,7 +34,13 @@ namespace SonarQube.Client.RoslynExporterAdapter
         /// <summary>
         /// Return the object as an XML string
         /// </summary>
-        public static string ToString<T>(T model) where T : class
+        public static string ToUTF8String<T>(T model) where T : class
+        {
+            var data = GetData(model);
+            return Encoding.UTF8.GetString(data);
+        }
+
+        private static byte[] GetData<T>(T model) where T : class
         {
             if (model == null)
             {
@@ -45,8 +51,7 @@ namespace SonarQube.Client.RoslynExporterAdapter
             using (var writer = new StreamWriter(stream))
             {
                 Write(model, writer);
-                var data = stream.ToArray();
-                return Encoding.UTF8.GetString(data);
+                return stream.ToArray();
             }
         }
 

@@ -36,6 +36,12 @@ namespace SonarQube.Client.Api.V5_20
         [JsonProperty("organization")]
         public virtual string OrganizationKey { get; set; }
 
+        [JsonIgnore()]
+        public virtual string QualityProfileKey { get; set; }
+
+        [JsonIgnore()]
+        public virtual string ProjectKey { get; set; }
+
         [JsonProperty("exporterKey", Required = Required.Always)]
         public virtual string ExporterKey => $"roslyn-{LanguageKey}";
 

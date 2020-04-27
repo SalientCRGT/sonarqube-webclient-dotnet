@@ -30,5 +30,9 @@ namespace SonarQube.Client.Api
         string QualityProfileName { get; set; }
 
         string OrganizationKey { get; set; }
+
+        string QualityProfileKey { get; set; }
+
+        string ProjectKey { get; set; }
     }
 }

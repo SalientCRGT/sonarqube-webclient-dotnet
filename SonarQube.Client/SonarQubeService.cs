@@ -266,7 +266,7 @@ namespace SonarQube.Client
         }
 
         public async Task<RoslynExportProfileResponse> GetRoslynExportProfileAsync(string qualityProfileName,
-            string organizationKey, SonarQubeLanguage language, CancellationToken token) =>
+            string organizationKey, SonarQubeLanguage language, string qualityProfileKey, CancellationToken token) =>
             await InvokeRequestAsync<IGetRoslynExportProfileRequest, RoslynExportProfileResponse>(
                 request =>
                 {

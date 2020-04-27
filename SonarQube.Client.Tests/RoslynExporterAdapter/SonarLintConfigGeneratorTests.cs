@@ -159,7 +159,7 @@ namespace SonarQube.Client.Tests.RoslynExporterAdapter
 
             // Act
             var actual = SonarLintConfigGenerator.Generate(rules, properties, "cs");
-            var actualXml = Serializer.ToString(actual);
+            var actualXml = Serializer.ToUTF8String(actual);
 
             // Assert
             actualXml.Should().Be(@"<?xml version=""1.0"" encoding=""utf-8""?>

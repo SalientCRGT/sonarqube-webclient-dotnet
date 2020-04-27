@@ -69,7 +69,7 @@ namespace SonarQube.Client
             SonarQubeLanguage language, CancellationToken token);
 
         Task<RoslynExportProfileResponse> GetRoslynExportProfileAsync(string qualityProfileName, string organizationKey,
-            SonarQubeLanguage language, CancellationToken token);
+            SonarQubeLanguage language, string qualityProfileKey, CancellationToken token);
 
         Task<IList<SonarQubeIssue>> GetSuppressedIssuesAsync(string projectKey, CancellationToken token);
 

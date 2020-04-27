@@ -27,7 +27,7 @@ namespace SonarQube.Client.RoslynExporterAdapter
 {
     public static class NuGetPackageInfoGenerator
     {
-        public static IEnumerable<NuGetPackageInfoResponse> GetNuGetPackageInfos(IEnumerable<SonarQubeRule> activeRules,
+        public static List<NuGetPackageInfoResponse> GetNuGetPackageInfos(IEnumerable<SonarQubeRule> activeRules,
             IDictionary<string, string> sonarProperties)
         {
             var propertyPrefixes = GetPluginPropertyPrefixes(activeRules);

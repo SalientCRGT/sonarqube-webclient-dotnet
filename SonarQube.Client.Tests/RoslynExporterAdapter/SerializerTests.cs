@@ -32,7 +32,7 @@ namespace SonarQube.Client.Tests.RoslynExporterAdapter
         public void Serializer_NullArg_Throws()
         {
             // Arrange
-            Action act = () => Serializer.ToString((MyDataClass)null);
+            Action act = () => Serializer.ToUTF8String((MyDataClass)null);
 
             act.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("model");
         }
@@ -44,7 +44,7 @@ namespace SonarQube.Client.Tests.RoslynExporterAdapter
             var inputData = new MyDataClass() { Value1 = "val1", Value2 = 22 };
 
             // Act
-            var actual = Serializer.ToString(inputData);
+            var actual = Serializer.ToUTF8String(inputData);
 
             // Assert
             const string expected = @"<?xml version=""1.0"" encoding=""utf-8""?>
