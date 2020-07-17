@@ -77,5 +77,7 @@ namespace SonarQube.Client
             DateTimeOffset eventsSince, CancellationToken token);
 
         Task<IList<SonarQubeModule>> GetAllModulesAsync(string projectKey, CancellationToken token);
+
+        Task<IList<SonarQubeIssue>> GetVulnerabilitiesAsync(string projectKey, CancellationToken token);
     }
 }

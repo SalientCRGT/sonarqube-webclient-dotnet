@@ -314,6 +314,20 @@ namespace SonarQube.Client
                 },
                 token);
 
+        public async Task<IList<SonarQubeIssue>> GetVulnerabilitiesAsync(string projectKey, CancellationToken token)
+        {
+            var allIssues = await InvokeRequestAsync<IGetIssuesRequest, SonarQubeIssue[]>(
+            request =>
+            {
+                // TODO: only interested in vulnerabilities
+                request.ProjectKey = projectKey;
+                request.Statuses = "OPEN,CONFIRMED,REOPENED"; // Don't include resolved or closed issues
+            },
+            token);
+
+            return allIssues;
+        }
+
         #region IDisposable Support
         private bool disposedValue; // To detect redundant calls
 
