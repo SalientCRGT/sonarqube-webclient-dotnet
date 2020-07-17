@@ -37,8 +37,12 @@ namespace SonarQube.Client.Api.V7_20
         [JsonProperty("statuses")]
         public string Statuses { get; set; }
 
-        // This property is not present in the IGetIssuesRequest interface, it is meant to be
-        // set by the GetIssuesRequestWrapper to add additional parameters to the API calls.
+        /// <summary>
+        /// Comma-separate list of types to return e.g. "BUG,CODE_SMELL"
+        /// </summary>
+        /// <remarks>
+        /// If "types" is not set then all types will be returned.
+        /// </remarks>
         [JsonProperty("types")]
         public string Types { get; set; }
 

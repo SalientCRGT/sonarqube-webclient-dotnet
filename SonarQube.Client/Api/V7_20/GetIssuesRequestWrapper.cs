@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -46,6 +47,8 @@ namespace SonarQube.Client.Api.V7_20
 
         public string Statuses { get; set; }
 
+        public string Types { get; set; }
+
         public ILogger Logger { get; set; }
 
         public async Task<SonarQubeIssue[]> InvokeAsync(HttpClient httpClient, CancellationToken token)
@@ -56,20 +59,36 @@ namespace SonarQube.Client.Api.V7_20
             innerRequest.Statuses = Statuses;
             innerRequest.Logger = Logger;
 
-            ResetInnerRequest();
-            innerRequest.Types = "CODE_SMELL";
-            var codeSmells = await innerRequest.InvokeAsync(httpClient, token);
-            WarnForApiLimit(codeSmells, innerRequest, "code smells");
+            // HACK: request all issues types if a specific types isn't specified
+            Types = Types ?? "CODE_SMELL,BUG,VULNERABILITY";
 
-            ResetInnerRequest();
-            innerRequest.Types = "BUG";
-            var bugs = await innerRequest.InvokeAsync(httpClient, token);
-            WarnForApiLimit(bugs, innerRequest, "bugs");
+            SonarQubeIssue[] codeSmells = Array.Empty<SonarQubeIssue>();
+            SonarQubeIssue[] bugs = Array.Empty<SonarQubeIssue>();
+            SonarQubeIssue[] vulnerabilities = Array.Empty<SonarQubeIssue>();
 
-            ResetInnerRequest();
-            innerRequest.Types = "VULNERABILITY";
-            var vulnerabilities = await innerRequest.InvokeAsync(httpClient, token);
-            WarnForApiLimit(vulnerabilities, innerRequest, "vulnerabilities");
+            if (Types.Contains("CODE_SMELL"))
+            {
+                ResetInnerRequest();
+                innerRequest.Types = "CODE_SMELL";
+                codeSmells = await innerRequest.InvokeAsync(httpClient, token);
+                WarnForApiLimit(codeSmells, innerRequest, "code smells");
+            }
+
+            if (Types.Contains("BUG"))
+            {
+                ResetInnerRequest();
+                innerRequest.Types = "BUG";
+                bugs = await innerRequest.InvokeAsync(httpClient, token);
+                WarnForApiLimit(bugs, innerRequest, "bugs");
+            }
+
+            if (Types.Contains("VULNERABILITY"))
+            {
+                ResetInnerRequest();
+                innerRequest.Types = "VULNERABILITY";
+                vulnerabilities = await innerRequest.InvokeAsync(httpClient, token);
+                WarnForApiLimit(vulnerabilities, innerRequest, "vulnerabilities");
+            }
 
             return codeSmells
                 .Concat(bugs)

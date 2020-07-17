@@ -49,8 +49,6 @@ namespace SonarQube.Client.Tests
   ""issues"": []
 }";
 
-            SetupRequest("api/issues/search?projects=shared&statuses=OPEN%2CCONFIRMED%2CREOPENED&types=CODE_SMELL&p=1&ps=500", noIssues);
-            SetupRequest("api/issues/search?projects=shared&statuses=OPEN%2CCONFIRMED%2CREOPENED&types=BUG&p=1&ps=500", noIssues);
             SetupRequest("api/issues/search?projects=shared&statuses=OPEN%2CCONFIRMED%2CREOPENED&types=VULNERABILITY&p=1&ps=500", @"
 {
   ""total"": 1,

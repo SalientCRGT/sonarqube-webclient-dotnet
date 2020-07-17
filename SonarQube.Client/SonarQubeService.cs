@@ -319,8 +319,8 @@ namespace SonarQube.Client
             var allIssues = await InvokeRequestAsync<IGetIssuesRequest, SonarQubeIssue[]>(
             request =>
             {
-                // TODO: only interested in vulnerabilities
                 request.ProjectKey = projectKey;
+                request.Types = "VULNERABILITY";
                 request.Statuses = "OPEN,CONFIRMED,REOPENED"; // Don't include resolved or closed issues
             },
             token);

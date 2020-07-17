@@ -28,6 +28,7 @@ namespace SonarQube.Client.Api
         string ProjectKey { get; set; }
         string Statuses { get; set; }
 
+        string Types { get; set; }
         // Update <see cref="V7_20.GetIssuesRequestWrapper"/> when adding properties here.
     }
 }
